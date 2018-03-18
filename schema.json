@@ -1,0 +1,11 @@
+{
+    "title": "Example Note",
+    "text": "This is some sample text to represent the body of a document",
+    "tags": ["important", "work"],
+    "attributes" : [
+        { "color": "red" },
+        { "pinned": true }
+    ],
+    "created": "2018-03-17", 
+    "expires": "2018-09-17"
+}
