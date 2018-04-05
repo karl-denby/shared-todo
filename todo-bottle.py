@@ -1,6 +1,7 @@
 from pymongo import MongoClient
-from bottle import route, run
+from bottle import route, run, template
 
+@route('/test')
 @route('/todo')
 def todo_list():
     connection = 'mongodb://localhost:27017'
@@ -12,6 +13,6 @@ def todo_list():
     for note in col.find():
         results.append(note)
 
-    return str(results)
+    return template('item_list', items=results)
 
 run()
