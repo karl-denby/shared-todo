@@ -2,9 +2,11 @@ from pymongo import MongoClient
 from multiprocessing import Queue, Process
 import ssl, os
 import datetime
+import argparse
 
-output = Queue()  # Message Queue for threads to load
-
+'''
+    Functions
+'''
 def create_note(connection = 'mongodb://localhost:27017', post = {}):
     
     # Create connection
@@ -15,23 +17,51 @@ def create_note(connection = 'mongodb://localhost:27017', post = {}):
     # Insert data
     return col.insert_one(post).inserted_id
 
-#
-# Goal: cli to add todo items to a mongodb collection hosted on Atlas
-# Current: just performs a threaded drop/insert of 1000 records
-#
-if __name__ == "__main__":    
-    note = {
-        "title": "Example Note",
-        "text": "This is some sample text to represent the body of a document",
-        "tags": ["important", "work"],
-        "attributes" : [
-            { "color": "red" },
-            { "pinned": True }
-        ],
-        "created": datetime.datetime.utcnow(), 
-        "expires": datetime.datetime.utcnow()
-    }
+'''
+    Constants
+'''
+NOTE = {
+    "title": "Example Note",
+    "text": "This is some sample text to represent the body of a document",
+    "tags": ["important", "work"],
+    "attributes" : [
+        { "color": "red" },
+        { "pinned": True }
+    ],
+    "created": datetime.datetime.utcnow(), 
+    "expires": datetime.datetime.utcnow()
+}
 
-    print("Creating Note")
-    create_note('mongodb://localhost:27017', note)
-    print("Done")
+
+'''
+    Goal: cli to add todo items to a mongodb collection hosted on Atlas
+    Current: just performs a threaded drop/insert of 1000 records
+'''
+
+output = Queue()  # Message Queue for threads to load
+
+if __name__ == "__main__":    
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "action",
+        choices=['create', 'list', 'modify', 'delete'],
+        help="Action: default is create if no action is specified"
+    )
+    
+    args = parser.parse_args()
+    
+    if args.action  == None:
+        action = 'create'
+    else:
+        action = args.action
+
+    if action == 'create':
+        print('create a note')
+    elif action == 'list':
+        print('list of notes')
+    elif action == 'modify':
+        print('change a note')
+    elif action == 'delete':
+        print('delete a note')
+    
