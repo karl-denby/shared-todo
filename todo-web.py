@@ -1,8 +1,11 @@
 from pymongo import MongoClient
-from bottle import route, run, template
+from bottle import route, run, template, response, static_file, debug
 
-@route('/test')
-@route('/todo')
+@route('/')
+def test():
+    return static_file('vue/index.html', root='.')
+
+@route('/data')
 def todo_list():
     connection = 'mongodb://localhost:27017'
     client = MongoClient(connection)    
@@ -13,6 +16,8 @@ def todo_list():
     for note in col.find():
         results.append(note)
 
-    return template('item_list', items=results)
+    response.content_type='application/json'
+    return {'Hello': 'world'}
 
-run()
+debug(True)
+run(reloader=True)

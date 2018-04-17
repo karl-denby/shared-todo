@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue do</title>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <h1>{{ greeting }}</h1>
+    <button v-on:click="addNote">Add Note</button>
+    <p>{{ notes }}</p>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        greeting: 'Welcome to your Vue.js app!',
+        notes: ''
+      },
+      created: function (){
+        this.loadNotes();
+      },
+      methods: {
+        addNote: function (){
+          alert('I was clicked')
+        },
+        loadNotes: function (){
+          axios.get('/data')
+          .then(function (response) {
+            console.log(response.data)
+            app.notes = response.data
+          })
+        }
+      }
+    })
+  </script>
+
+</body>
+</html>
