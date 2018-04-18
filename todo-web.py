@@ -13,11 +13,11 @@ def todo_list():
     col = db['todo']
 
     results = []
-    for note in col.find():
-        results.append(note)
+    for result in col.find():
+        results.append(result)
 
     response.content_type='application/json'
-    return {'Hello': 'world'}
+    return str(results)
 
 debug(True)
 run(reloader=True)
