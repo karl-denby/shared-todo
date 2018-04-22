@@ -11,16 +11,23 @@ def test():
     return static_file('vue/index.html', root='.')
 
 
-@post('/rest')
+@post('/api')
 def data_create():
        
-    data = {'Note': 'CRUD is fun!!!'}
+    data = request.json
+
+    connection = 'mongodb://localhost:27017'
+    client = MongoClient(connection)
+    db = client['shared']
+    col = db['todo']
+
+    col.insert_one(data)
 
     response.headers['Content-Type'] = 'application/json'
-    return json.dumps(data)
+    return 'ok'
 
 
-@get('/rest')
+@get('/api')
 def data_read():
     connection = 'mongodb://localhost:27017'
     client = MongoClient(connection)    
@@ -35,14 +42,21 @@ def data_read():
     return str(results)
 
 
-@put('/rest/<data>')
-def update_handler(name):
+@put('/api/<data>')
+def update_handler(data):
     pass
 
 
-@delete('/rest/<data>')
-def delete_handler(name):
-    pass
+@delete('/api/<title>')
+def delete_handler(title):
+    connection = 'mongodb://localhost:27017'
+    client = MongoClient(connection)
+    db = client['shared']
+    col = db['todo']
+
+    col.delete_one({"title": title})
+
+    return 'ok'
 
 
 app = application = default_app()
