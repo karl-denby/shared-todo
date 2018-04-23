@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from bottle import route, run, template, static_file, debug, run, default_app
 from bottle import request, response
 from bottle import post, get, put, delete
-import gunicorn
+import waitress
 import json
 
 
@@ -11,7 +11,7 @@ def test():
     return static_file('vue/index.html', root='.')
 
 
-@post('/api')
+@post('/api/v1')
 def data_create():
        
     data = request.json
@@ -27,7 +27,7 @@ def data_create():
     return 'ok'
 
 
-@get('/api')
+@get('/api/v1')
 def data_read():
     connection = 'mongodb://localhost:27017'
     client = MongoClient(connection)    
@@ -42,12 +42,12 @@ def data_read():
     return str(results)
 
 
-@put('/api/<data>')
+@put('/api/v1/<data>')
 def update_handler(data):
     pass
 
 
-@delete('/api/<title>')
+@delete('/api/v1/<title>')
 def delete_handler(title):
     connection = 'mongodb://localhost:27017'
     client = MongoClient(connection)
@@ -62,4 +62,4 @@ def delete_handler(title):
 app = application = default_app()
 
 if __name__ == '__main__':
-    run(server='gunicorn', host = '127.0.0.1', port = 8000, debug=True, reloader=True)
+    run(server='waitress', host = '127.0.0.1', port = 8000, debug=True, reloader=True)
