@@ -27,10 +27,10 @@
       methods: {
         addNote: function (){
           alert('I was clicked')
-          axios.put('/rest','TESTDATA')
+          axios.put('/api/v1','TESTDATA')
         },
         loadNotes: function (){
-          axios.get('/rest')
+          axios.get('/api/v1')
           .then(function (response) {
             console.log(response.data)
             app.notes = response.data
