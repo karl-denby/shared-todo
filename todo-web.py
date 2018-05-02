@@ -14,10 +14,12 @@ def test():
 @post('/api/v1')
 def data_create():
        
+    print('data is ', request.json)
     data = request.json
 
     connection = 'mongodb://localhost:27017'
     client = MongoClient(connection)
+
     db = client['shared']
     col = db['todo']
 
@@ -30,7 +32,8 @@ def data_create():
 @get('/api/v1')
 def data_read():
     connection = 'mongodb://localhost:27017'
-    client = MongoClient(connection)    
+    client = MongoClient(connection)
+
     db = client['shared']
     col = db['todo']
 
@@ -51,9 +54,11 @@ def update_handler(data):
 def delete_handler(title):
     connection = 'mongodb://localhost:27017'
     client = MongoClient(connection)
+
     db = client['shared']
     col = db['todo']
 
+    print('title is', title)
     col.delete_one({"title": title})
 
     return 'ok'
