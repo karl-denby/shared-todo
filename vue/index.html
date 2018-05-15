@@ -10,7 +10,8 @@
 
   <div id="app">
     <h1>{{ greeting }}</h1>
-    <button v-on:click="addNote">Add Note</button>
+    <button v-on:click="addNote">Add</button>
+    <button v-on:click="deleteNote">Delete</button>
     <p>{{ notes }}</p>
   </div>
 
@@ -26,8 +27,8 @@
       },
       methods: {
         addNote: function (){
-          alert('I was clicked')
-          axios.put('/api/v1','TESTDATA')
+          alert('Creating Note')
+          axios.post('/api/v1', {'title': 'TESTDATA'})
         },
         loadNotes: function (){
           axios.get('/api/v1')
@@ -35,10 +36,16 @@
             console.log(response.data)
             app.notes = response.data
           })
+        },
+        deleteNote: function(){
+          alert('Deleting Note')
+          axios.delete(
+            '/api/v1/TESTDATA',
+            { 'headers': { 'Content-Type': 'text/plain'}}
+          )
         }
       }
     })
   </script>
-
 </body>
 </html>

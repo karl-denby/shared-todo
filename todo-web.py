@@ -1,10 +1,14 @@
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from bottle import route, run, template, static_file, debug, run, default_app
 from bottle import request, response
 from bottle import post, get, put, delete
+
 import waitress
 import json
 
+load_dotenv()
 
 @route('/')
 def test():
@@ -16,7 +20,7 @@ def data_create():
        
     data = request.json
 
-    connection = 'mongodb://localhost:27017'
+    connection = os.environ.get('MONGO_CONNECTION_STRING', 'mongodb://localhost:27017')
     client = MongoClient(connection)
     db = client['shared']
     col = db['todo']
@@ -29,7 +33,7 @@ def data_create():
 
 @get('/api/v1')
 def data_read():
-    connection = 'mongodb://localhost:27017'
+    connection = os.environ.get('MONGO_CONNECTION_STRING', 'mongodb://localhost:27017')
     client = MongoClient(connection)    
     db = client['shared']
     col = db['todo']
@@ -49,7 +53,7 @@ def update_handler(data):
 
 @delete('/api/v1/<title>')
 def delete_handler(title):
-    connection = 'mongodb://localhost:27017'
+    connection = os.environ.get('MONGO_CONNECTION_STRING', 'mongodb://localhost:27017')
     client = MongoClient(connection)
     db = client['shared']
     col = db['todo']

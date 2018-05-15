@@ -1,21 +1,26 @@
+import os
+from dotenv import load_dotenv
+
 from pymongo import MongoClient
 from multiprocessing import Queue, Process
 import ssl, os
 import datetime
 import argparse
 
+load_dotenv()
+
 '''
     Functions
 '''
-def create_note(connection = 'mongodb://localhost:27017', post = {}):
+def create_note(connection = os.environ.get('MONGO_CONNECTION_STRING', 'mongodb://localhost:27017'), post = {}):
     
     # Create connection
-    client = MongoClient(connection)    
+    client = MongoClient(connection)
     db = client['shared']
     col = db['todo']
     
     # Insert data
-    return col.insert_one(post).inserted_id
+    return col.insert_one({}).inserted_id
 
 '''
     Constants
@@ -58,6 +63,7 @@ if __name__ == "__main__":
 
     if action == 'create':
         print('create a note')
+        create_note(NOTE)
     elif action == 'list':
         print('list of notes')
     elif action == 'modify':
