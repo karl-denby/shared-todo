@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <ol>
+                <li v-for="todo in todos">
+                    <strong>{{ todo.title }}</strong><br>
+                    {{ todo.text }}
+                </li>
+                <br>
+                Title: <input v-model="new_title"><br>
+                Text: <input v-model="new_text"><br>
+                <button v-on:click="addNote()">Add Note</button>
+            </ol>
+        </div>
+        <script>
+        var app = new Vue({        
+            el: '#app',
+            data: {
+                date: new Date().toLocaleString(),
+                todos: [
+                    { title: 'note1', text: 'eat'},
+                    { title: 'note2', text: 'sleep'},
+                    { title: 'note3', text: 'eat again'}
+                ],
+                new_title: 'title',
+                new_text: 'things to do'
+            },
+            methods: {
+                addNote() {
+                    this.todos.push({
+                        title: this.new_title,
+                        text: this.new_text
+                    })
+                    this.new_title = ''
+                    this.new_text = ''
+                    alert('added a note')
+                }
+            }
+        })
+        </script>
+    </body>
+</html>

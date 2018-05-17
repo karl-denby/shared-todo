@@ -12,7 +12,7 @@ load_dotenv()
 
 @route('/')
 def test():
-    return static_file('vue/index.html', root='.')
+    return static_file('vue/index2.html', root='.')
 
 
 @post('/api/v1')
